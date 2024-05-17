@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,4 +8,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'client';
+  data = {};
+  constructor(private http: HttpClient)
+  {
+    this.http.get("https://5000-ghebr0us-dockergitpod-cns1p0wbo5t.ws-eu111.gitpod.io/simple_json")
+    .subscribe(
+      (data) => this.data = data
+    )
+  }
 }
