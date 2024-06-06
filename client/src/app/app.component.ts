@@ -1,5 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { AnimalsService } from './animals.service';
+import { Animal, VettAnimal } from './animals.service';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -8,12 +11,25 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'client';
-  data = {};
-  constructor(private http: HttpClient)
+  data = new Array<Animal>();
+  //Mi faccio iniettare l'animal servce
+  constructor(private animalService : AnimalsService)
   {
-    this.http.get("https://5000-ghebr0us-dockergitpod-cns1p0wbo5t.ws-eu111.gitpod.io/simple_json")
-    .subscribe(
-      (data) => this.data = data
+    //Mi sottoscrivo al servizio
+    this.animalService.getAnimals().subscribe(
+      (data: VettAnimal)=>{this.data = data['animals']}
     )
   }
+  
+    //Per la reactive form creo due proprietà che conterranno i valori delle caselle di testo
+    form = new FormGroup({
+      "name": new FormControl(),
+      "type": new FormControl(),
+    });
+  
+    onSubmit() {
+      console.log("reactive form submitted");
+      console.log(this.form.controls['name'].value);
+      console.log(this.form.controls['type'].value);
+    }
 }
